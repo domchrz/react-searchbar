@@ -10,15 +10,15 @@ export default class SearchBar extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    if (this.props.searchMode !== this.props.searchModes.onSubmit) return;
-    this.props.setUsers(this.input.current.value);
+    if (this.props.activeSearchMode !== this.props.searchModes.onSubmit) return;
+    this.searchUsers(this.input.current.value);
     this.input.current.value = '';
   }
 
   handleOnChange(e) {
-    switch (this.props.searchMode) {
+    switch (this.props.activeSearchMode) {
       case this.props.searchModes.immediate:
-        this.immediateSearch(e);
+        this.searchUsers(e.target.value);
         break;
       case this.props.searchModes.afterTypingEnds:
         this.searchAfterDelay(e);
@@ -28,20 +28,19 @@ export default class SearchBar extends Component {
     }
   }
 
-  immediateSearch(e) {
-    const value = e.target.value.trim();
+  searchUsers(string) {
+    const value = string.trim();
     this.props.setUsers(value);
   }
 
   searchAfterDelay(e) {
     this.timeoutID.current = setTimeout(() => {
-      const value = e.target.value.trim();
-      this.props.setUsers(value);
+      this.searchUsers(e.target.value);
     }, 800);
   }
 
   componentDidUpdate() {
-    if (this.props.searchMode !== this.props.searchModes.afterTypingEnds)
+    if (this.props.activeSearchMode !== this.props.searchModes.afterTypingEnds)
       return;
     clearTimeout(this.timeoutID.current);
   }

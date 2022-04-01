@@ -15,7 +15,7 @@ class App extends Component {
         onSubmit: 1,
         afterTypingEnds: 2,
       },
-      searchMode: 0,
+      activeSearchMode: 0,
     };
   }
 
@@ -27,21 +27,26 @@ class App extends Component {
     });
   }
 
-  setSearchMode(searchMode) {
-    if (searchMode !== 0 && searchMode !== 1 && searchMode !== 2) return;
-    this.setState({ searchMode });
+  setactiveSearchMode(activeSearchMode) {
+    if (
+      activeSearchMode !== 0 &&
+      activeSearchMode !== 1 &&
+      activeSearchMode !== 2
+    )
+      return;
+    this.setState({ activeSearchMode });
   }
 
   setImmediate() {
-    this.setSearchMode(this.state.searchModes.immediate);
+    this.setactiveSearchMode(this.state.searchModes.immediate);
   }
 
   setOnSubmit() {
-    this.setSearchMode(this.state.searchModes.onSubmit);
+    this.setactiveSearchMode(this.state.searchModes.onSubmit);
   }
 
   setAfterTypingEnds() {
-    this.setSearchMode(this.state.searchModes.afterTypingEnds);
+    this.setactiveSearchMode(this.state.searchModes.afterTypingEnds);
   }
 
   render() {
@@ -50,19 +55,22 @@ class App extends Component {
         <header>
           <Button
             isActive={
-              this.state.searchMode === this.state.searchModes.immediate
+              this.state.activeSearchMode === this.state.searchModes.immediate
             }
             handleClick={this.setImmediate.bind(this)}>
             immediate
           </Button>
           <Button
-            isActive={this.state.searchMode === this.state.searchModes.onSubmit}
+            isActive={
+              this.state.activeSearchMode === this.state.searchModes.onSubmit
+            }
             handleClick={this.setOnSubmit.bind(this)}>
             onSubmit
           </Button>
           <Button
             isActive={
-              this.state.searchMode === this.state.searchModes.afterTypingEnds
+              this.state.activeSearchMode ===
+              this.state.searchModes.afterTypingEnds
             }
             handleClick={this.setAfterTypingEnds.bind(this)}>
             afterTyping
@@ -70,7 +78,7 @@ class App extends Component {
         </header>
         <SearchBar
           setUsers={this.setUsers.bind(this)}
-          searchMode={this.state.searchMode}
+          activeSearchMode={this.state.activeSearchMode}
           searchModes={this.state.searchModes}
         />
         {this.state.users.length !== 0 && (

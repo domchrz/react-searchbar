@@ -27,7 +27,7 @@ class App extends Component {
     });
   }
 
-  setactiveSearchMode(activeSearchMode) {
+  setActiveSearchMode(activeSearchMode) {
     if (
       activeSearchMode !== 0 &&
       activeSearchMode !== 1 &&
@@ -38,15 +38,15 @@ class App extends Component {
   }
 
   setImmediate() {
-    this.setactiveSearchMode(this.state.searchModes.immediate);
+    this.setActiveSearchMode(this.state.searchModes.immediate);
   }
 
   setOnSubmit() {
-    this.setactiveSearchMode(this.state.searchModes.onSubmit);
+    this.setActiveSearchMode(this.state.searchModes.onSubmit);
   }
 
   setAfterTypingEnds() {
-    this.setactiveSearchMode(this.state.searchModes.afterTypingEnds);
+    this.setActiveSearchMode(this.state.searchModes.afterTypingEnds);
   }
 
   render() {

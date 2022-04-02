@@ -28,7 +28,7 @@ export default class UsersList extends Component {
   }
 
   render() {
-    if (this.state.filteredUsers === 0) return;
+    if (this.state.filteredUsers.length === 0) return;
 
     return (
       <div className={styles['user-list']}>

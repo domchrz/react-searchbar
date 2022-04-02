@@ -4,7 +4,7 @@ export const SearchContext = createContext();
 
 const searchReducder = (state, action) => {
   switch (action.type) {
-    case 'SET_SEARCH':
+    case 'SET_SEARCH_STRING':
       return { ...state, searchString: action.payload };
     case 'SET_SEARCH_MODE':
       return { ...state, activeSearchMode: action.payload };
@@ -23,7 +23,7 @@ export function SearchProvider({ children }) {
   });
 
   const setSearchString = (string) => {
-    dispatch({ type: 'SET_SEARCH', payload: string });
+    dispatch({ type: 'SET_SEARCH_STRING', payload: string });
   };
 
   const setSearchMode = (mode) => {

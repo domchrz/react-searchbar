@@ -1,7 +1,10 @@
 import { Component, createRef } from 'react';
+import { SearchContext } from '../context/SearchContext';
 import styles from './SearchBar.module.scss';
 
 export default class SearchBar extends Component {
+  static contextType = SearchContext
+
   constructor() {
     super();
     this.input = createRef(null);
@@ -10,17 +13,17 @@ export default class SearchBar extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    if (this.props.activeSearchMode !== this.props.searchModes.onSubmit) return;
+    if (this.context.activeSearchMode !== this.context.searchModes.onSubmit) return;
     this.searchUsers(this.input.current.value);
     this.input.current.value = '';
   }
 
   handleOnChange(e) {
-    switch (this.props.activeSearchMode) {
-      case this.props.searchModes.immediate:
+    switch (this.context.activeSearchMode) {
+      case this.context.searchModes.immediate:
         this.searchUsers(e.target.value);
         break;
-      case this.props.searchModes.afterTypingEnds:
+      case this.context.searchModes.afterTyping:
         this.searchAfterDelay(e);
         break;
       default:
@@ -30,7 +33,7 @@ export default class SearchBar extends Component {
 
   searchUsers(string) {
     const value = string.trim();
-    this.props.setUsers(value);
+    this.context.setSearchString(value);
   }
 
   searchAfterDelay(e) {
@@ -40,7 +43,7 @@ export default class SearchBar extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.activeSearchMode !== this.props.searchModes.afterTypingEnds)
+    if (this.context.activeSearchMode !== this.context.searchModes.afterTypingEnds)
       return;
     clearTimeout(this.timeoutID.current);
   }

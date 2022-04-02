@@ -43,7 +43,7 @@ export default class SearchBar extends Component {
   }
 
   componentDidUpdate() {
-    if (this.context.activeSearchMode !== this.context.searchModes.afterTypingEnds)
+    if (this.context.activeSearchMode !== this.context.searchModes.afterTyping)
       return;
     clearTimeout(this.timeoutID.current);
   }

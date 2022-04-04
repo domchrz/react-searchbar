@@ -29,7 +29,7 @@ export default class SearchBar extends Component {
   searchAfterDelay() {
     this.setState({
       timeoutID: setTimeout(() => {
-        this.searchUsers(this.state.inputValue);
+        this.searchUsers();
       }, 800),
     });
   }

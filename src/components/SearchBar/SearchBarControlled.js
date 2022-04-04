@@ -46,8 +46,10 @@ export default class SearchBar extends Component {
         break;
     }
     if (
-      this.context.activeSearchMode === this.context.searchModes.afterTyping
+      this.context.activeSearchMode === this.context.searchModes.afterTyping &&
+      prevState.timeoutID !== this.state.tiemoutID
     ) {
+      clearTimeout(prevState.tiemoutID);
       this.setState({ timeoutID: null });
     }
   }

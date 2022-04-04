@@ -1,8 +1,8 @@
 import { Component } from 'react';
-import SearchBar from './components/SearchBarControlled';
-import UsersList from './components/UsersList';
+import SearchBar from './components/SearchBar/SearchBarControlled';
+import UsersList from './components/UsersList/UsersList';
 import './App.scss';
-import Button from './components/Button';
+import Button from './components/Button/Button';
 import { SearchContext } from './context/SearchContext';
 
 class App extends Component {

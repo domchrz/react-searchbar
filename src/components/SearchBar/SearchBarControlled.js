@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { SearchContext } from '../context/SearchContext';
+import { SearchContext } from '../../context/SearchContext';
 import styles from './SearchBar.module.scss';
 
 export default class SearchBar extends Component {

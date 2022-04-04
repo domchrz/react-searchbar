@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { SearchContext } from '../context/SearchContext';
+import { SearchContext } from '../../context/SearchContext';
 import styles from './Button.module.scss';
 
 export default class Button extends Component {

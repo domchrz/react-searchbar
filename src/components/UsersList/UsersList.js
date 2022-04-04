@@ -1,7 +1,7 @@
 import { Component } from 'react';
-import { SearchContext } from '../context/SearchContext';
-import USERS_DATA from '../data/USERS';
-import User from './User';
+import { SearchContext } from '../../context/SearchContext';
+import USERS_DATA from '../../data/USERS';
+import User from '../User/User';
 import styles from './UsersList.module.scss';
 
 export default class UsersList extends Component {

@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import SearchBar from './components/SearchBar';
+import SearchBar from './components/SearchBarControlled';
 import UsersList from './components/UsersList';
 import USERS_DATA from './data/USERS';
 import './App.scss';
@@ -13,7 +13,7 @@ class App extends Component {
       searchModes: {
         immediate: 0,
         onSubmit: 1,
-        afterTypingEnds: 2,
+        afterTyping: 2,
       },
       activeSearchMode: 0,
     };
@@ -45,8 +45,8 @@ class App extends Component {
     this.setActiveSearchMode(this.state.searchModes.onSubmit);
   }
 
-  setAfterTypingEnds() {
-    this.setActiveSearchMode(this.state.searchModes.afterTypingEnds);
+  setAfterTyping() {
+    this.setActiveSearchMode(this.state.searchModes.afterTyping);
   }
 
   render() {
@@ -69,10 +69,9 @@ class App extends Component {
           </Button>
           <Button
             isActive={
-              this.state.activeSearchMode ===
-              this.state.searchModes.afterTypingEnds
+              this.state.activeSearchMode === this.state.searchModes.afterTyping
             }
-            handleClick={this.setAfterTypingEnds.bind(this)}>
+            handleClick={this.setAfterTyping.bind(this)}>
             afterTyping
           </Button>
         </header>

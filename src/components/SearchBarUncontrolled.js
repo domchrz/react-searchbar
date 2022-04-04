@@ -20,7 +20,7 @@ export default class SearchBar extends Component {
       case this.props.searchModes.immediate:
         this.searchUsers(e.target.value);
         break;
-      case this.props.searchModes.afterTypingEnds:
+      case this.props.searchModes.afterTyping:
         this.searchAfterDelay(e);
         break;
       default:
@@ -40,7 +40,7 @@ export default class SearchBar extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.activeSearchMode !== this.props.searchModes.afterTypingEnds)
+    if (this.props.activeSearchMode !== this.props.searchModes.afterTyping)
       return;
     clearTimeout(this.timeoutID.current);
   }

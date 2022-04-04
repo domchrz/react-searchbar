@@ -1,9 +1,9 @@
 import { Component } from 'react';
-import SearchBar from './components/SearchBarControlled';
-import UsersList from './components/UsersList';
+import SearchBar from './components/SearchBar/SearchBarControlled';
+import UsersList from './components/UsersList/UsersList';
 import USERS_DATA from './data/USERS';
 import './App.scss';
-import Button from './components/Button';
+import Button from './components/Button/Button';
 
 class App extends Component {
   constructor() {

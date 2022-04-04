@@ -6,7 +6,7 @@ export default class User extends Component {
     return (
       <div className={styles.user}>
         <img
-          src={require(`../assets/avatars/${this.props.user.name.toLowerCase()}-avatar.png`)}
+          src={require(`../../assets/avatars/${this.props.user.name.toLowerCase()}-avatar.png`)}
           alt="user avatar"
         />
         <p className={styles['user-name']}>{this.props.user.name}</p>

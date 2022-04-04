@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import SearchBar from './components/SearchBar';
+import SearchBar from './components/SearchBarControlled';
 import UsersList from './components/UsersList';
 import './App.scss';
 import Button from './components/Button';

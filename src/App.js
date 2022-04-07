@@ -1,88 +1,67 @@
-import { Component } from 'react';
-import SearchBar from './components/SearchBar/SearchBarControlled';
+import { Component, createRef } from 'react';
+import SearchBarControlled from './components/SearchBar/SearchBarControlled';
+import SearchBarUncontrolled from './components/SearchBar/SearchBarUncontrolled';
 import UsersList from './components/UsersList/UsersList';
-import USERS_DATA from './data/USERS';
-import './App.scss';
 import Button from './components/Button/Button';
+import SEARCH_MODES from './constants/searchModes';
+import USERS_DATA from './constants/users';
+import './App.scss';
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      users: USERS_DATA,
-      searchModes: {
-        immediate: 0,
-        onSubmit: 1,
-        afterTyping: 2,
-      },
-      activeSearchMode: 0,
-    };
-  }
+  timeoutID = createRef(null);
+  state = {
+    users: USERS_DATA,
+    activeSearchMode: SEARCH_MODES.immediate,
+  };
 
-  setUsers(string) {
+  setUsers = (string) => {
     this.setState({
       users: USERS_DATA.filter((user) =>
         user.name.toLowerCase().includes(string.toLowerCase())
       ),
     });
-  }
+  };
 
-  setActiveSearchMode(activeSearchMode) {
-    if (
-      activeSearchMode !== 0 &&
-      activeSearchMode !== 1 &&
-      activeSearchMode !== 2
-    )
-      return;
-    this.setState({ activeSearchMode });
-  }
-
-  setImmediate() {
-    this.setActiveSearchMode(this.state.searchModes.immediate);
-  }
-
-  setOnSubmit() {
-    this.setActiveSearchMode(this.state.searchModes.onSubmit);
-  }
-
-  setAfterTyping() {
-    this.setActiveSearchMode(this.state.searchModes.afterTyping);
-  }
+  setUsersDebounced = (string) => {
+    clearTimeout(this.timeoutID.current);
+    this.timeoutID.current = setTimeout(() => {
+      this.setUsers(string);
+    }, 500);
+  };
 
   render() {
     return (
       <div className="app">
         <header>
-          <Button
-            isActive={
-              this.state.activeSearchMode === this.state.searchModes.immediate
-            }
-            handleClick={this.setImmediate.bind(this)}>
-            immediate
-          </Button>
-          <Button
-            isActive={
-              this.state.activeSearchMode === this.state.searchModes.onSubmit
-            }
-            handleClick={this.setOnSubmit.bind(this)}>
-            onSubmit
-          </Button>
-          <Button
-            isActive={
-              this.state.activeSearchMode === this.state.searchModes.afterTyping
-            }
-            handleClick={this.setAfterTyping.bind(this)}>
-            afterTyping
-          </Button>
+          {SEARCH_MODES &&
+            Reflect.ownKeys(SEARCH_MODES).map((key) => (
+              <Button
+                handleClick={() =>
+                  this.setState({ activeSearchMode: SEARCH_MODES[key] })
+                }
+                isActive={this.state.activeSearchMode === SEARCH_MODES[key]}
+                key={key}>
+                {key}
+              </Button>
+            ))}
         </header>
-        <SearchBar
-          setUsers={this.setUsers.bind(this)}
-          activeSearchMode={this.state.activeSearchMode}
-          searchModes={this.state.searchModes}
+        <SearchBarControlled
+          onSubmit={this.state.activeSearchMode === SEARCH_MODES.onSubmit}
+          searchQuery={
+            this.state.activeSearchMode === SEARCH_MODES.afterTyping
+              ? this.setUsersDebounced
+              : this.setUsers
+          }
         />
-        {this.state.users.length !== 0 && (
-          <UsersList users={this.state.users} />
-        )}
+        <SearchBarUncontrolled
+          onSubmit={this.state.activeSearchMode === SEARCH_MODES.onSubmit}
+          searchQuery={
+            this.state.activeSearchMode === SEARCH_MODES.afterTyping
+              ? this.setUsersDebounced
+              : this.setUsers
+          }
+        />
+        {!!this.state.users.length && <UsersList users={this.state.users} />}
       </div>
     );
   }

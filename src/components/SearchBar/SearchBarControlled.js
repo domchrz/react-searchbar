@@ -2,66 +2,36 @@ import { Component } from 'react';
 import styles from './SearchBar.module.scss';
 
 export default class SearchBar extends Component {
-  constructor() {
-    super();
-    this.state = {
-      inputValue: '',
-      tiemoutID: null,
-    };
-  }
+  state = { query: '' };
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
-    if (this.props.activeSearchMode !== this.props.searchModes.onSubmit) return;
-    this.searchUsers();
-    this.setState({ inputValue: '' });
-  }
 
-  searchUsers() {
-    const value = this.state.inputValue.trim();
-    this.props.setUsers(value);
-  }
-
-  searchAfterDelay() {
-    this.setState({
-      timeoutID: setTimeout(() => {
-        this.searchUsers();
-      }, 800),
-    });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.inputValue === this.state.inputValue) return;
-
-    switch (this.props.activeSearchMode) {
-      case this.props.searchModes.immediate:
-        this.searchUsers();
-        break;
-      case this.props.searchModes.afterTyping:
-        this.searchAfterDelay();
-        break;
+    if (this.props.onSubmit) {
+      this.props.searchQuery(this.state.query);
+      this.setState({ query: '' });
     }
+  };
 
-    if (
-      this.props.activeSearchMode === this.props.searchModes.afterTyping &&
-      prevState.timeoutID !== this.state.tiemoutID
-    ) {
-      clearTimeout(prevState.tiemoutID);
-      this.setState({ timeoutID: null });
+  handleChange = (e) => {
+    if (this.props.onSubmit) {
+      this.setState({ query: e.target.value.trim() });
+    } else {
+      this.setState({ query: e.target.value.trim() }, () => {
+        this.props.searchQuery(this.state.query);
+      });
     }
-  }
+  };
 
   render() {
     return (
-      <form
-        className={styles['search-bar']}
-        onSubmit={this.handleSubmit.bind(this)}>
+      <form className={styles['search-bar']} onSubmit={this.handleSubmit}>
         <i className="material-icons">search</i>
         <input
           type="text"
           placeholder="Search..."
-          onChange={(e) => this.setState({ inputValue: e.target.value })}
-          value={this.state.inputValue}
+          onChange={this.handleChange}
+          value={this.state.query}
         />
       </form>
     );

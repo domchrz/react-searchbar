@@ -1,15 +1,16 @@
 import { Component } from 'react';
-import SearchBarControlled from './components/SearchBar/SearchBarControlled';
-import SearchBarUncontrolled from './components/SearchBar/SearchBarUncontrolled';
+// import SearchBarControlled from './components/SearchBar/SearchBarControlled';
+// import SearchBarUncontrolled from './components/SearchBar/SearchBarUncontrolled';
 import UsersList from './components/UsersList/UsersList';
 import Button from './components/Button/Button';
 import SEARCH_MODES from './constants/searchModes';
 import USERS_DATA from './constants/users';
 import './App.scss';
-import setDebounce from './helpers/debounce';
+import debounce from './helpers/debounce';
+import searchBar from './components/SearchBar/SearchBar';
 
 class App extends Component {
-  debounce = setDebounce();
+  debounce = debounce();
   state = {
     users: USERS_DATA,
     activeSearchMode: SEARCH_MODES.immediate,
@@ -40,7 +41,8 @@ class App extends Component {
             </Button>
           ))}
         </header>
-        <SearchBarControlled
+        {searchBar(this.state.activeSearchMode, this.setUsers)}
+        {/* <SearchBarControlled
           searchOnSubmit={this.state.activeSearchMode === SEARCH_MODES.onSubmit}
           searchQuery={
             this.state.activeSearchMode === SEARCH_MODES.afterTyping
@@ -55,7 +57,7 @@ class App extends Component {
               ? this.setUsersDebounced
               : this.setUsers
           }
-        />
+        /> */}
         {!!this.state.users.length && <UsersList users={this.state.users} />}
       </div>
     );

@@ -1,4 +1,4 @@
-export default function setDebounce() {
+export default function debounce() {
   let timeoutID;
   return (timeout, cb, ...cbArgs) => {
     clearTimeout(timeoutID);

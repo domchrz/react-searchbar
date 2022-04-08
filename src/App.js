@@ -1,4 +1,4 @@
-import { Component, createRef } from 'react';
+import { Component } from 'react';
 import SearchBarControlled from './components/SearchBar/SearchBarControlled';
 import SearchBarUncontrolled from './components/SearchBar/SearchBarUncontrolled';
 import UsersList from './components/UsersList/UsersList';
@@ -6,47 +6,42 @@ import Button from './components/Button/Button';
 import SEARCH_MODES from './constants/searchModes';
 import USERS_DATA from './constants/users';
 import './App.scss';
+import setDebounce from './helpers/debounce';
 
 class App extends Component {
-  timeoutID = createRef(null);
+  debounce = setDebounce();
   state = {
     users: USERS_DATA,
     activeSearchMode: SEARCH_MODES.immediate,
   };
 
-  setUsers = (string) => {
+  setUsers = (query) => {
     this.setState({
       users: USERS_DATA.filter((user) =>
-        user.name.toLowerCase().includes(string.toLowerCase())
+        user.name.toLowerCase().includes(query.toLowerCase())
       ),
     });
   };
 
-  setUsersDebounced = (string) => {
-    clearTimeout(this.timeoutID.current);
-    this.timeoutID.current = setTimeout(() => {
-      this.setUsers(string);
-    }, 500);
-  };
+  setUsersDebounced = (query) => this.debounce(500, this.setUsers, query);
 
   render() {
     return (
       <div className="app">
         <header>
-          {SEARCH_MODES &&
-            Reflect.ownKeys(SEARCH_MODES).map((key) => (
-              <Button
-                handleClick={() =>
-                  this.setState({ activeSearchMode: SEARCH_MODES[key] })
-                }
-                isActive={this.state.activeSearchMode === SEARCH_MODES[key]}
-                key={key}>
-                {key}
-              </Button>
-            ))}
+          {Reflect.ownKeys(SEARCH_MODES).map((key) => (
+            <Button
+              handleClick={() =>
+                this.setState({ activeSearchMode: SEARCH_MODES[key] })
+              }
+              isActive={this.state.activeSearchMode === SEARCH_MODES[key]}
+              key={key}>
+              {key}
+            </Button>
+          ))}
         </header>
         <SearchBarControlled
-          onSubmit={this.state.activeSearchMode === SEARCH_MODES.onSubmit}
+          searchOnSubmit={this.state.activeSearchMode === SEARCH_MODES.onSubmit}
           searchQuery={
             this.state.activeSearchMode === SEARCH_MODES.afterTyping
               ? this.setUsersDebounced
@@ -54,7 +49,7 @@ class App extends Component {
           }
         />
         <SearchBarUncontrolled
-          onSubmit={this.state.activeSearchMode === SEARCH_MODES.onSubmit}
+          searchOnSubmit={this.state.activeSearchMode === SEARCH_MODES.onSubmit}
           searchQuery={
             this.state.activeSearchMode === SEARCH_MODES.afterTyping
               ? this.setUsersDebounced

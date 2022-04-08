@@ -7,7 +7,7 @@ export default class SearchBar extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     
-    if (this.props.onSubmit) {
+    if (this.props.searchOnSubmit) {
       this.props.searchQuery(this.input.current.value.trim());
       this.input.current.value = '';
       e.target.reset();
@@ -15,7 +15,7 @@ export default class SearchBar extends Component {
   };
 
   handleChange = () => {
-    if (!this.props.onSubmit) {
+    if (!this.props.searchOnSubmit) {
       this.props.searchQuery(this.input.current.value.trim());
     }
   };

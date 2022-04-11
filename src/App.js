@@ -1,16 +1,19 @@
-import { Component } from 'react';
-// import SearchBarControlled from './components/SearchBar/SearchBarControlled';
-// import SearchBarUncontrolled from './components/SearchBar/SearchBarUncontrolled';
+import { PureComponent } from 'react';
 import UsersList from './components/UsersList/UsersList';
 import Button from './components/Button/Button';
 import SEARCH_MODES from './constants/searchModes';
 import USERS_DATA from './constants/users';
+import { withSearchState } from './components/WithSearchState/WithSearchState';
+import OnSubmit from './components/SearchOnMode/OnSubmit';
+import Immediate from './components/SearchOnMode/Immediate';
+import Debounced from './components/SearchOnMode/Debounced';
 import './App.scss';
-import debounce from './helpers/debounce';
-import searchBar from './components/SearchBar/SearchBar';
 
-class App extends Component {
-  debounce = debounce();
+const SearchImmediate = withSearchState(Immediate);
+const SearchDebounced = withSearchState(Debounced);
+const SearchOnSubmit = withSearchState(OnSubmit);
+
+class App extends PureComponent {
   state = {
     users: USERS_DATA,
     activeSearchMode: SEARCH_MODES.immediate,
@@ -24,13 +27,11 @@ class App extends Component {
     });
   };
 
-  setUsersDebounced = (query) => this.debounce(500, this.setUsers, query);
-
-  render() {
+  render() {    
     return (
       <div className="app">
         <header>
-          {Reflect.ownKeys(SEARCH_MODES).map((key) => (
+          {Object.keys(SEARCH_MODES).map((key) => (
             <Button
               handleClick={() =>
                 this.setState({ activeSearchMode: SEARCH_MODES[key] })
@@ -41,23 +42,12 @@ class App extends Component {
             </Button>
           ))}
         </header>
-        {searchBar(this.state.activeSearchMode, this.setUsers)}
-        {/* <SearchBarControlled
-          searchOnSubmit={this.state.activeSearchMode === SEARCH_MODES.onSubmit}
-          searchQuery={
-            this.state.activeSearchMode === SEARCH_MODES.afterTyping
-              ? this.setUsersDebounced
-              : this.setUsers
-          }
-        />
-        <SearchBarUncontrolled
-          searchOnSubmit={this.state.activeSearchMode === SEARCH_MODES.onSubmit}
-          searchQuery={
-            this.state.activeSearchMode === SEARCH_MODES.afterTyping
-              ? this.setUsersDebounced
-              : this.setUsers
-          }
-        /> */}
+        {this.state.activeSearchMode === SEARCH_MODES.onSubmit &&
+          <SearchOnSubmit handleSearch={this.setUsers} />}
+        {this.state.activeSearchMode === SEARCH_MODES.immediate &&
+          <SearchImmediate handleSearch={this.setUsers} />}
+        {this.state.activeSearchMode === SEARCH_MODES.afterTyping &&
+          <SearchDebounced handleSearch={this.setUsers} />}
         {!!this.state.users.length && <UsersList users={this.state.users} />}
       </div>
     );

@@ -3,19 +3,22 @@ import debounce from '../../helpers/debounce';
 import Input from '../Input/Input';
 import styles from './SearchBar.module.scss';
 
-export default class SearchDebounced extends Component {
+export default class Debounced extends Component {
   debounce = debounce();
 
   handleChange = (e) => {
-    this.props.setQuery(e.target.value, (updatedQuery) =>
-      this.debounce(500, this.props.searchQuery, updatedQuery)
+    this.props.setState({ query: e.target.value.trim() }, () =>
+      this.props.handleSearch(this.props.query)
     );
   };
 
   render() {
     return (
       <div className={styles['search-bar']}>
-        <Input value={this.props.query} handleChange={this.handleChange} />
+        <Input
+          value={this.props.query}
+          handleChange={(e) => this.debounce(500, this.handleChange, e)}
+        />
       </div>
     );
   }

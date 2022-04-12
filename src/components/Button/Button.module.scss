@@ -1,0 +1,21 @@
+.button {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  padding: 1rem;
+  color: var(--font);
+  background-color: var(--bg-dark);
+  border-radius: var(--border-radius);
+  border: none;
+  transition: color 0.3s, background-color 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--bg-dark);
+    background-color: var(--font);
+  }
+}
+
+.active {
+  color: var(--bg-dark);
+  background-color: var(--font);
+}

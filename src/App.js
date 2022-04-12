@@ -27,7 +27,7 @@ class App extends PureComponent {
     });
   };
 
-  render() {    
+  render() {
     return (
       <div className="app">
         <header>
@@ -42,12 +42,15 @@ class App extends PureComponent {
             </Button>
           ))}
         </header>
-        {this.state.activeSearchMode === SEARCH_MODES.onSubmit &&
-          <SearchOnSubmit handleSearch={this.setUsers} />}
-        {this.state.activeSearchMode === SEARCH_MODES.immediate &&
-          <SearchImmediate handleSearch={this.setUsers} />}
-        {this.state.activeSearchMode === SEARCH_MODES.afterTyping &&
-          <SearchDebounced handleSearch={this.setUsers} />}
+        {this.state.activeSearchMode === SEARCH_MODES.onSubmit && (
+          <SearchOnSubmit handleSearch={this.setUsers} />
+        )}
+        {this.state.activeSearchMode === SEARCH_MODES.immediate && (
+          <SearchImmediate handleSearch={this.setUsers} />
+        )}
+        {this.state.activeSearchMode === SEARCH_MODES.afterTyping && (
+          <SearchDebounced handleSearch={this.setUsers} />
+        )}
         {!!this.state.users.length && <UsersList users={this.state.users} />}
       </div>
     );

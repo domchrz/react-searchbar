@@ -1,3 +1,4 @@
+import Input from '../Input/Input';
 import React, { PureComponent } from 'react';
 
 export const withSearchState = (SearchOnMode) => {
@@ -6,14 +7,16 @@ export const withSearchState = (SearchOnMode) => {
       query: '',
     };
 
+    handleChange = (e) => this.setState({ query: e.target.value.trim() });
+
     render() {
       return (
         <>
           <SearchOnMode
             query={this.state.query}
-            setState={this.setState.bind(this)}
-            handleSearch={this.props.handleSearch}
-          />
+            handleSearch={this.props.handleSearch}>
+            <Input value={this.state.query} handleChange={this.handleChange} />
+          </SearchOnMode>
         </>
       );
     }

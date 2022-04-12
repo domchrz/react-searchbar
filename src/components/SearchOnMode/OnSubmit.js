@@ -1,5 +1,4 @@
 import { PureComponent } from 'react';
-import Input from '../Input/Input';
 import styles from './SearchBar.module.scss';
 
 export default class OnSubmit extends PureComponent {
@@ -8,14 +7,11 @@ export default class OnSubmit extends PureComponent {
     this.props.handleSearch(this.props.query);
   };
 
-  handleChange = (e) => {
-    this.props.setState({ query: e.target.value.trim() });
-  };
 
   render() {
     return (
       <form className={styles['search-bar']} onSubmit={this.handleSubmit}>
-        <Input handleChange={this.handleChange} value={this.props.query} />
+        {this.props.children}
       </form>
     );
   }
